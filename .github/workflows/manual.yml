@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - develop
-
+      
 jobs:
   delete-merged-branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Delete merged branch
