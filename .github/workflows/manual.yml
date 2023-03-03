@@ -1,0 +1,17 @@
+name: Delete Merged Branch
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  delete-merged-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Delete merged branch
+        run: |
+          git branch --merged | grep -v "develop" | xargs git branch -d
+          git push origin --delete $(git branch --merged | grep -v "develop" | awk '{print $1}')
