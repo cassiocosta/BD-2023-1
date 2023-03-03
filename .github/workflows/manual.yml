@@ -17,5 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Delete merged branch
         run: |
-          git branch --merged | grep -v "develop" | xargs git branch -d
-          git push origin --delete $(git branch --merged | grep -v "develop" | awk '{print $1}')
+          MERGED_BRANCHES=$(git branch --merged | grep -v "develop")
+          if [ ! -z "$MERGED_BRANCHES" ]; then
+            echo "$MERGED_BRANCHES" | xargs git branch -d
+            echo "$MERGED_BRANCHES" | xargs -n 1 git push origin --delete
+          fi
